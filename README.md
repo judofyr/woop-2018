@@ -1,71 +1,45 @@
 # Woop
 
-Woop is a programming language and environment that is almost entirely written
-in itself and is easy to bootstrap. You only need an interpreter for the virtual
-machine (which can be done in ~150 lines of C), and by loading hand-written
-bytecode you get a fully functional C-style language with an interactive shell.
+Woop is a programming language and environment that is almost entirely written in itself and is easy to bootstrap.
+You only need an interpreter for the virtual machine (which can be done in very few lines of C), and by loading hand-written bytecode you get a fully functional C-style language with an interactive shell.
 
 More specifically Woop contains:
 
-- WoopVM (`vm.c`): An untyped, register-based virtual machine with an
-  interpreter written in C. We also provide C macros in order to write bytecode
-  in text format. Bytecode is written in files named `something.vm.c` and they
-  should not be considered "C files" (have a look for yourself).
+- **WoopVM:** An untyped, stack-based virtual machine with an interpreter written in C.
+  The VM has enough features (conditionals, blocks) that it's doable to write programs in bytecode by hand.
 
-- Type system (`type.vm.c`): A basic, C-style, type system that handles numbers,
-  pointers and structs (with correct alignment and field offsets).
+- **Bytecode assembler/linker:** A DSL for writing bytecode for the WoopVM.
 
-- WoopLang: A typed, C-style language that has higher-level features such as
-  structred control flow, struct fields and functions. It has a stack-based
-  binary representation and once again we provide C macros (`cmd.c`) in order to
-  write programs without having a parser.
+- **Type system:** A basic, C-style, type system that handles numbers, pointers and structs (with correct alignment and field offsets).
+  This is written as a library in bytecode.
 
-- Compiler (`compiler.vm.c`): Compiles Woop programs (in their binary
-  representation) into WoopVM bytecode, making it possible to run Woop programs
-  through the WoopVM interpreter.
+- **WoopLang:** A typed, C-style language that has higher-level features such as structred control flow, struct fields and functions.
+  WoopLang has a stack-based binary representation, and there's a compiler (written in bytecode) which converts this representation into bytecode.
 
-- Parser (`parser.w.c`): Parses a file/string into the binary representation of
-  Woop, making it possible to write Woop programs without using C macros.
+- **Parser:** Parses a file/string into the binary representation of WoopLang.
 
-- Shell (`shell.w`): Interactive shell that let's you write Woop programs on the
-  command-line.
+- **Shell:** Interactive shell that let's you write Woop programs on the command-line.
 
 ## Status
 
-Woop is currently under development and will be published once there is a
-working prototype.
+Woop is currently under development and will be published once there is a working prototype.
 
 ## Running
 
 You need a C compiler which supports C99.
 
-Build the `woop` binary:
+Run the tests:
 
-    $ make
-
-Run:
-
-    $ ./woop PROGRAM
-
-Run the shell:
-
-    $ ./woop src/shell.w
-
-See the [`examples/` directory](examples) for more examples.
+    $ make test
 
 ## Credits
 
-In spirit, Woop is heavily inspired by the Forth language/environment. Forth
-demonstrated that it is possible to get reasonable high-level, interactive
-environment with few lines of code by defining a simple, expressive language at
-the bottom. Woop currently has a higher (implementation) complexity than Forth,
-but in exchange we get "normal" programming constructs such as functions,
-variables and blocks.
+In spirit, Woop is heavily inspired by the Forth language/environment.
+Forth demonstrated that it is possible to get reasonable high-level, interactive environment with few lines of code by defining a simple, expressive language at the bottom.
+Woop currently has a higher (implementation) complexity than Forth, but in exchange we get "normal" programming constructs such as functions, variables and blocks.
 
-In implementation, Woop is a result from many years of experimenting with
-languages, intermediate representations and virtual machines. We're forever
-grateful to the programming and computer science community which keeps on
-publishing fascinating ideas.
+In implementation, Woop is a result from many years of experimenting with languages, intermediate representations and virtual machines.
+We're forever grateful to the programming and computer science community which keeps on publishing fascinating ideas.
 
 ## License
 
