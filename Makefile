@@ -9,7 +9,8 @@ all: test
 
 debug: | build
 	@echo "Enabling debug flags"
-	@echo "-g -Wall -Wextra -Werror -Wfatal-errors -Wno-unused-variable -Wno-unused-parameter -fsanitize=undefined -fsanitize=address" > build/cflags
+	@echo "-g -Wall -Wextra -Werror -Wfatal-errors -Wno-unused-variable -Wno-unused-parameter -fsanitize=undefined -fsanitize=address" > build/cflags.tmp
+	@cmp -s build/cflags.tmp build/cflags || cp build/cflags.tmp build/cflags
 
 build/cflags: | build
 	@echo > $@
