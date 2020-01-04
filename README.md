@@ -10,11 +10,8 @@ More specifically Woop contains:
 
 - **Bytecode assembler/linker:** A DSL for writing bytecode for the WoopVM.
 
-- **Type system:** A basic, C-style, type system that handles numbers, pointers and structs (with correct alignment and field offsets).
-  This is written as a library in bytecode.
-
 - **WoopLang:** A typed, C-style language that has higher-level features such as structred control flow, struct fields and functions.
-  WoopLang has a stack-based binary representation, and there's a compiler (written in bytecode) which converts this representation into bytecode.
+  WoopLang has a binary representation, and there's a compiler (written in bytecode) which converts this representation into bytecode.
 
 - **Parser:** Parses a file/string into the binary representation of WoopLang.
 
