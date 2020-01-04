@@ -13,6 +13,7 @@ enum W_OPCODE {
     // Stack manipulation
     W_OPCODE_PICK,
     W_OPCODE_ROLL,
+    W_OPCODE_DROP,
 
     // Arithmetic
     W_OPCODE_ADD,
@@ -20,6 +21,9 @@ enum W_OPCODE {
     W_OPCODE_MUL,
     W_OPCODE_DIV,
     W_OPCODE_MOD,
+
+    // Branching
+    W_OPCODE_CHOOSE,
 
     // Calling blocks
     W_OPCODE_CALL,

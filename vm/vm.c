@@ -47,9 +47,14 @@ static w_val_t w_vm_peek(w_vm_t *vm, size_t idx) {
     }
 
 void w_vm_run(w_vm_t *vm, size_t block_id) {
-    w_block_t block = ((w_block_t *)vm->blocks.data.ptr)[block_id];
-    w_opcode_t* ops = (w_opcode_t *)block.body.data.ptr;
-    size_t size = (size_t)block.body.size.num;
+    w_block_t block;
+    w_opcode_t* ops;
+    size_t size;
+
+begin:
+    block = ((w_block_t *)vm->blocks.data.ptr)[block_id];
+    ops = (w_opcode_t *)block.body.data.ptr;
+    size = (size_t)block.body.size.num;
     
     for (size_t i = 0; i < size; ) {
         switch (ops[i]) {
@@ -69,13 +74,30 @@ void w_vm_run(w_vm_t *vm, size_t block_id) {
             i += 2;
             break;
         }
+        case W_OPCODE_DROP: {
+            w_vm_pop(vm);
+            i += 1;
+            break;
+        }
         ARITH_CASE(W_OPCODE_ADD, +)
         ARITH_CASE(W_OPCODE_SUB, -)
         ARITH_CASE(W_OPCODE_MUL, *)
         ARITH_CASE(W_OPCODE_DIV, /)
         ARITH_CASE(W_OPCODE_MOD, %)
+        case W_OPCODE_CHOOSE: {
+            size_t cond = w_vm_pop(vm).num;
+            w_vm_pop_at(vm, cond == 0 ? 0 : 1);
+            i += 1;
+            break;
+        }
         case W_OPCODE_CALL: {
             size_t new_block_id = w_vm_pop(vm).num;
+            if (i + 1 == size) {
+                // tailcall
+                block_id = new_block_id;
+                goto begin;
+            }
+
             w_vm_run(vm, new_block_id);
             i += 1;
             break;
